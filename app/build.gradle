@@ -1,0 +1,145 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'Buzz'
+            keyPassword 'buzz123456'
+            storeFile file('D:/Android/jksFolder/five_star_coin/five_star_coin.jks')
+            //storeFile file('E:/jksFolder/five_star_coin/five_star_coin.jks')
+            storePassword 'buzz123456'
+        }
+    }
+
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+    defaultConfig {
+        applicationId "com.jywl.fivestarcoin"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        // 使用support.v8.renderscript
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
+        // 使用multiDex
+        multiDexEnabled true
+        flavorDimensions "channel"
+        versionName "1.0.${versionCode}"
+        ndk {
+            // 设置支持的SO库架构，腾讯OCR支支持v7a平台
+            abiFilters 'armeabi-v7a' , 'x86' //, 'x86_64', 'arm64-v8a', 'armeabi'
+        }
+    }
+
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['jniLibs']
+            assets.srcDirs = ['src/main/assets']
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs' //this way we can find the .aar file in libs folder
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true
+            //混淆
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+        officialOnline {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "1"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "official"]
+        }
+        officialDev {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "2"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "official"]
+        }
+        oppo {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "1"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "oppo"]
+        }
+        xiaomi {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "1"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "xiaomi"]
+        }
+        huawei {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "1"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "huawei"]
+        }
+        vivo {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "1"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "vivo"]
+        }
+        otherMarket {
+            dimension = "channel"
+            buildConfigField "int", "ENV_TYPE", "1"
+            manifestPlaceholders = [FLAVOR_ID_VALUE: "otherMarket"]
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "MtxdAdmin_${variant.productFlavors[0].name}-${variant.buildType.name}-${defaultConfig.versionName}-${releaseTime()}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.3.0-alpha04'
+    //vm
+    implementation(["androidx.lifecycle:lifecycle-extensions:2.1.0",
+                    "androidx.lifecycle:lifecycle-common-java8:2.1.0",
+                    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"])
+    //dagger2
+    implementation "com.google.dagger:dagger:2.15"
+    kapt "com.google.dagger:dagger-compiler:2.15"
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.7.1"
+    implementation "com.squareup.retrofit2:converter-moshi:2.7.1"
+    implementation"com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
+    //glide
+    implementation "com.github.bumptech.glide:glide:4.10.0"
+    //baseAdapter
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46"
+    //timber log
+    implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
+}

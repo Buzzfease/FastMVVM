@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4966DF</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="half_transparent">#50000000</color>
+    <color name="half_transparent_white">#10ffffff</color>
+    <color name="textColorFadeWhite">#DADDF5</color>
+    <color name="textColorFade">#7F80A2</color>
+    <color name="textColorGrey">#888888</color>
+    <color name="textColorBlack">#454545</color>
+    <color name="textColorDeepBlack">#252525</color>
+    <color name="text_color_red">#FE676E</color>
+</resources>
